@@ -1,5 +1,6 @@
 # Simple ICO
-Simple ICO adds a permanent timed sale function to any ERC20 token. This code has a lower average gas cost than the standard crowdfunding model, can be used repeatedly without redeployment, and automatically stops purchasing activity once the deadline is reached. This is a major improvement to other ICO code in that it doesn't require any manual "checkGoal" or "checkDeadline" function to be ran at the end of a sale. The openSale function can have a deadline, or can be timeless. This code functions more like a traditional IPO, where the company can sell shares in multiple rounds at variable pricing. Another significant difference is that our code is not triggered by any goal reached parameter, meaning that there is no failure condition present.
+Simple ICO adds a permanent timed sale function to any ERC20 token. This code has a lower average gas cost than the standard crowdfunding model, can be used repeatedly without redeployment, and automatically stops purchasing activity once the deadline is reached. This is a major improvement to other ICO code in that it doesn't require any manual "checkGoal" or "checkDeadline" function to be ran at the end of a sale. The openSale function can have a deadline, or can be timeless. This code functions more like a traditional IPO, where the company can sell shares in multiple rounds at variable pricing.
+
 ```C#
     
 modifier isOpen() {if (timedSale = false || now <= dLine) _; } // checks deadline if timed sale is true
