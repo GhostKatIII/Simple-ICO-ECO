@@ -19,8 +19,17 @@ function openSale(uint tMin, bool isTimed) onlyOwner public {
 			}
 		
 		    if (isTimed == false) {
-			   timedSale = false;
+			   timedSale = false;       //setting the timed sale to false, opens the buy function
 					}
+}
+
+	function reSet () public onlyOwner {
+		if (isClosed == false) {isClosed = true;} // closes the buy function for untimed sale events
+}
+
+function eKo(uint256 amount) onlyOwner public {             
+    require(this.balance >= amount);                       //easy withdraw function gives immediate access to funds raised
+    msg.sender.transfer(amount);
 }
 ```
 In a normal ICO, the failure condition is if the money isn't raised. If the project falls short of it's fundraising goal, it is effectivelly shipwrecked, and the investors get all of their money back. This isn't a function of traditional venture capital. Simple ICO encourages more transparent, variable, and controlled investment opportunities.
