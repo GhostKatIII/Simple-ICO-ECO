@@ -1,6 +1,5 @@
 # Eternal Coin Offering
-ECO adds a reusable timed sale function to the ERC20 token. This code has a lower average gas cost than the standard crowdfunding model, can be used repeatedly without redeployment, and automatically stops purchasing activity once the deadline is reached. This is a major improvement to other ICO code in that it doesn't require any manual "checkGoal" or "checkDeadline" function to be ran at the end of a sale. The openSale function can have a deadline, or can be timeless. Most importantly, it can be reused over and over again. This code functions like a traditional share sale event, where the company can sell shares in multiple rounds at variable pricing.
-
+ECO adds a reusable timed sale function to the ERC20 token. This code has a lower average gas cost than the standard crowdfunding model, can be used repeatedly without redeployment, and automatically stops purchasing activity once the deadline is reached. This is a major improvement to other ICO code in that it doesn't require any manual "checkGoal" or "checkDeadline" function to be ran at the end of a sale. The openSale function can have a deadline, or can be timeless. Most importantly, it can be reused. This code adds intrinsic sale event functionality to the standard itself. 
 ```C#
     
 modifier isOpen() {if (timedSale = false || now <= dLine) _; } // checks deadline if timed sale is true
