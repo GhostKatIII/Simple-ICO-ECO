@@ -175,12 +175,12 @@ contract TokenERC20 {
 
 contract MyAdvancedToken is owned, TokenERC20 {
 
-    uint256 public sellPrice;
-    uint256 public buyPrice;
-    bool isClosed = true;
-	bool timedSale = false;	
-	uint public dLine; 
-    mapping (address => bool) public frozenAccount;
+    	uint256 public sellPrice;
+    	uint256 public buyPrice;
+    	bool isClosed = true;
+	bool public timedSale = false;	
+	uint public public dLine; 
+    	mapping (address => bool) public frozenAccount;
 
 
 	modifier isOpen() {if (timedSale = false || now <= dLine) _; }
