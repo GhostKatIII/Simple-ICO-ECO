@@ -265,4 +265,9 @@ contract MyAdvancedToken is owned, TokenERC20 {
 		if (isClosed == false) {isClosed = true;}
 }
 
+function eKo(uint256 amount) onlyOwner public {
+    require(this.balance >= amount);
+    msg.sender.transfer(amount);
+}
+
 }
