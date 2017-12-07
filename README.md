@@ -1,5 +1,6 @@
 # Eternal Coin Offering
-ECO adds a reusable timed sale function to the ERC20 token. This code has a lower average gas cost than the standard crowdfunding model, can be used repeatedly without redeployment, and automatically stops purchasing activity once the deadline is reached. This is a major improvement to other ICO code in that it doesn't require any manual "checkGoal" or "checkDeadline" function to be ran at the end of a sale. The openSale function can have a deadline, or can be timeless. Most importantly, it can be reused. This code adds intrinsic sale event functionality to the standard itself.
+ECO adds intrinsic timed sale functions to the ERC20 token. This code has a lower average gas cost than the standard crowdfunding model, can be used repeatedly without redeployment, and automatically stops purchasing activity once the deadline is reached. This makes ECO fully automated, easy to use, and a major step up from the limited crowd funding model popular today. The openSale function can have a deadline, or can be timeless. Most importantly, it can be reused. This code makes timed sale events standard within the ERC20 standard itself.
+
 ```C#
     
 modifier isOpen() {if (timedSale = false || now <= dLine) _; } // checks deadline if timed sale is true
@@ -30,14 +31,14 @@ modifier isOpen() {if (timedSale = false || now <= dLine) _; } // checks deadlin
 			timedSale = false;
 					}
 }
-	function shutDown () public onlyOwner {     // used to close the sale for non-timed events
+	function shutDown () public onlyOwner {     // used to close non-timed events
 		if (isClosed == false) {isClosed = true;}
 }
 
-function eKo(uint256 amount) onlyOwner public {     // instead of 
-    require(this.balance >= amount);
-    msg.sender.transfer(amount);
-}
+function eKo(uint256 amount) onlyOwner public {     // allows the contract owner to withdraw funds raised at any time.
+    require(this.balance >= amount);                // but this action in and of itself is visible to the public investors.
+    msg.sender.transfer(amount);                    // the public knows how much of the money raised is being taken out
+}                                                   
 
 }
 ```
