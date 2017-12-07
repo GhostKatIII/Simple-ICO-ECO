@@ -23,7 +23,7 @@ contract TokenERC20 {
     // Public variables of the token
     string public name;
     string public symbol;
-    uint8 public decimals = 18;
+    uint8 public decimals = 0;
     // 18 decimals is the strongly suggested default, avoid changing it
     uint256 public totalSupply;
 
@@ -175,16 +175,18 @@ contract TokenERC20 {
 
 contract MyAdvancedToken is owned, TokenERC20 {
 
-    	uint256 public sellPrice;
-    	uint256 public buyPrice;
-    	bool isClosed = true;
+
+
+    uint256 public sellPrice;
+    uint256 public buyPrice;
+    bool public isClosed = true;
 	bool public timedSale = false;	
-	uint public public dLine; 
-    	mapping (address => bool) public frozenAccount;
-
-
+	uint public dLine; 
+	
 	modifier isOpen() {if (timedSale = false || now <= dLine) _; }
-
+    
+    
+    mapping (address => bool) public frozenAccount;
 
     /* This generates a public event on the blockchain that will notify clients */
     event FrozenFunds(address target, bool frozen);
@@ -235,11 +237,18 @@ contract MyAdvancedToken is owned, TokenERC20 {
     }
 
     /// @notice Buy tokens from contract by sending ether
-    function buy() isOpen payable public {
+    function() isOpen payable public {     //for humans
         require(!isClosed);
 	uint amount = msg.value / buyPrice;               // calculates the amount
         _transfer(this, msg.sender, amount);              // makes the transfers
     }
+
+     function buy() isOpen payable public {     //for robots
+        require(!isClosed);
+	uint amount = msg.value / buyPrice;               // calculates the amount
+        _transfer(this, msg.sender, amount);              // makes the transfers
+    }
+
 
     /// @notice Sell `amount` tokens to contract
     /// @param amount amount of tokens to be sold
@@ -248,7 +257,9 @@ contract MyAdvancedToken is owned, TokenERC20 {
         _transfer(msg.sender, this, amount);              // makes the transfers
         msg.sender.transfer(amount * sellPrice);          // sends ether to the seller. It's important to do this last to avoid recursion attacks
     }
-	function openSale(uint tMin, bool isTimed) onlyOwner public {
+    
+    
+    	function openSale(uint tMin, bool isTimed) onlyOwner public {
 		
 		isClosed = false;
 		
