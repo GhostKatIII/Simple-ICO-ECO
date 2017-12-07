@@ -1,37 +1,47 @@
 # Eternal Coin Offering
-ECO adds a reusable timed sale function to the ERC20 token. This code has a lower average gas cost than the standard crowdfunding model, can be used repeatedly without redeployment, and automatically stops purchasing activity once the deadline is reached. This is a major improvement to other ICO code in that it doesn't require any manual "checkGoal" or "checkDeadline" function to be ran at the end of a sale. The openSale function can have a deadline, or can be timeless. Most importantly, it can be reused. This code adds intrinsic sale event functionality to the standard itself. 
+ECO adds a reusable timed sale function to the ERC20 token. This code has a lower average gas cost than the standard crowdfunding model, can be used repeatedly without redeployment, and automatically stops purchasing activity once the deadline is reached. This is a major improvement to other ICO code in that it doesn't require any manual "checkGoal" or "checkDeadline" function to be ran at the end of a sale. The openSale function can have a deadline, or can be timeless. Most importantly, it can be reused. This code adds intrinsic sale event functionality to the standard itself.
 ```C#
     
 modifier isOpen() {if (timedSale = false || now <= dLine) _; } // checks deadline if timed sale is true
 
-function buy() isOpen payable public {
+    /// @notice Buy tokens from contract by sending ether
+    function() isOpen payable public {     //for humans
         require(!isClosed);
-	      uint amount = msg.value / buyPrice;             
-        _transfer(this, msg.sender, amount);              
+	uint amount = msg.value / buyPrice;               // calculates the amount
+        _transfer(this, msg.sender, amount);              // makes the transfers
     }
 
-function openSale(uint tMin, bool isTimed) onlyOwner public {
+     function buy() isOpen payable public {     //for robots
+        require(!isClosed);
+	uint amount = msg.value / buyPrice;               // calculates the amount
+        _transfer(this, msg.sender, amount);              // makes the transfers
+    }
+
+      function openSale(uint tMin, bool isTimed) onlyOwner public {
+		
 		isClosed = false;
-		    if (isTimed == true) {
-		    dLine = now + tMin * 1 minutes;
-		    timedSale = true;
+		
+		if (isTimed == true) {
+		dLine = now + tMin * 1 minutes;
+		timedSale = true;
 			}
 		
-		    if (isTimed == false) {
-			   timedSale = false;       //setting the timed sale to false, opens the buy function
+		if (isTimed == false) {
+			timedSale = false;
 					}
 }
-
-	function reSet () public onlyOwner {
-		if (isClosed == false) {isClosed = true;} // closes the buy function for untimed sale events
+	function shutDown () public onlyOwner {     // used to close the sale for non-timed events
+		if (isClosed == false) {isClosed = true;}
 }
 
-function eKo(uint256 amount) onlyOwner public {             
-    require(this.balance >= amount);                       //easy withdraw function gives immediate access to funds raised
+function eKo(uint256 amount) onlyOwner public {     // instead of 
+    require(this.balance >= amount);
     msg.sender.transfer(amount);
 }
+
+}
 ```
-In a normal ICO, the failure condition is if the money isn't raised. If the project falls short of it's fundraising goal, it is effectivelly shipwrecked, and the investors get all of their money back. This isn't a function of traditional venture capital, where an investment can't be reversed. Simple ICO encourages more transparent, variable, and controlled investment opportunities.
+Simple ICO encourages more transparent, variable, and controlled investment opportunities. Instead of funds being released to the project at the end of the sale, the funds are available instantly, as is true in the real world. When one buys a share during an IPO, the cash used for the purchase is given directly to the shareholder association. Our model is more effective at selling tokenized assets because it is reusable, modular, low gas cost, and adds intrinsic features to any ERC20 contract.
 
 Sometimes a token is a share, sometimes it represents a product that hasn't been made yet, but ideally the purchase of a token should return a genuine asset. That asset can be access to contract functions, or access to ether owned by a DAO. ECO encourages investment in projects with proven value, and lets those projects do as many rounds of fundraising as they need. 
 
